@@ -1,6 +1,7 @@
 import apache_beam as beam
 from apache_beam.options.pipeline_options import PipelineOptions
 import numpy as np
+import json
 
 class SplitRow(beam.DoFn):
     def process(self, element):
@@ -22,6 +23,7 @@ class ConvertDataTypes(beam.DoFn):
         except ValueError:
             return []
 
+
 class NormalizeFeatures(beam.DoFn):
     def setup(self):
         self.feature_means = None
@@ -29,9 +31,12 @@ class NormalizeFeatures(beam.DoFn):
 
     def process(self, element):
         features = np.array(element[:-1])
-        if self.feature_means is None:
+        if self.feature_means is None or self.feature_stds is None:
             self.feature_means = features.mean(axis=0)
             self.feature_stds = features.std(axis=0)
+            # Save parameters to file
+            with open('preprocessing_parameters.json', 'w') as f:
+                json.dump({'mean': self.feature_means.tolist(), 'std': self.feature_stds.tolist()}, f)
         normalized_features = (features - self.feature_means) / self.feature_stds
         return [normalized_features.tolist() + [element[-1]]]
 

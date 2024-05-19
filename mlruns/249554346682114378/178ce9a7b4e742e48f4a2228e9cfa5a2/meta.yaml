@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/249554346682114378/178ce9a7b4e742e48f4a2228e9cfa5a2/artifacts
+end_time: 1716088763518
+entry_point_name: ''
+experiment_id: '249554346682114378'
+lifecycle_stage: active
+run_id: 178ce9a7b4e742e48f4a2228e9cfa5a2
+run_name: run_4
+run_uuid: 178ce9a7b4e742e48f4a2228e9cfa5a2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716088761603
+status: 3
+tags: []
+user_id: ch20b103sivasankar
