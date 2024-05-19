@@ -14,7 +14,7 @@ import joblib
 mlflow.set_tracking_uri("http://127.0.0.1:8080")
 
 # Load the dataset
-dataset = "HTRU_2_processed.csv-00000-of-00001"
+dataset = "HTRU_2_processed-00000-of-00001.csv"
 df = pd.read_csv(dataset, header=None)
 
 # Separate features and target
