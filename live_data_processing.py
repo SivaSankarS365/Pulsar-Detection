@@ -31,5 +31,5 @@ def preprocess_live_data(live_data):
     var_feature = np.var(live_data_normalized)
     
     live_data_normalized = np.concatenate([live_data_normalized, interaction_features, polynomial_features, [mean_feature, var_feature]])
-    
+    print(live_data_normalized.shape)
     return live_data_normalized
