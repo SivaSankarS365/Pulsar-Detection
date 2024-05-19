@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/994106276633604647/708a275c02f84c03af483f1952bd716a/artifacts
+end_time: 1716061289463
+entry_point_name: ''
+experiment_id: '994106276633604647'
+lifecycle_stage: active
+run_id: 708a275c02f84c03af483f1952bd716a
+run_name: run_3
+run_uuid: 708a275c02f84c03af483f1952bd716a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716061287754
+status: 3
+tags: []
+user_id: melpakkam-pradeep
