@@ -8,6 +8,7 @@ import uvicorn
 import os
 import joblib
 import pandas as pd
+from prometheus_client import Summary, start_http_server, Counter, Gauge
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -15,6 +16,10 @@ from live_data_processing import preprocess_live_data
 
 app = FastAPI(docs_url="/docs")
 
+
+REQUEST_DURATION = Summary('api_timing', 'Request duration in seconds')
+counter = Counter('api_call_counter', 'number of times that API is called', ['endpoint', 'client'])
+gauge_time = Gauge('api_runtime_secs', 'runtime of the method in seconds', ['endpoint', 'client']) 
 # Function to load the model from the specified path
 def load_my_model(path: str):
     """
@@ -51,6 +56,7 @@ def load_my_model(path: str):
     except IOError as e:
         raise IOError(f"Error reading model file: {e}")
 
+@REQUEST_DURATION.time()
 @app.post("/predict")
 async def predict_pulsar(request:Request,file: UploadFile = File(...),):
     """
@@ -62,7 +68,11 @@ async def predict_pulsar(request:Request,file: UploadFile = File(...),):
     Returns:
     dict: A dictionary containing the predicted class (0 for not a pulsar and 1 for pulsar).
     """
- 
+
+    # Increment counter
+    counter.labels(endpoint='/predict', client=request.client.host).inc()
+    start = time.time()
+
     # Read the bytes from the uploaded image
         # Read the file content
     data = await file.read()
@@ -78,6 +88,10 @@ async def predict_pulsar(request:Request,file: UploadFile = File(...),):
     loaded_model = load_my_model(model_path)
     # Predict the digit using the serialized array
     predicted_class = loaded_model.predict(normalized_input_data)
+
+    time_taken = time.time() - start
+    gauge_time.labels(endpoint='/predict', client=request.client.host).set(time_taken)
+
     # Return the predicted digit to the client
     return {"Class": str(predicted_class)}
 
@@ -87,6 +101,9 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python api-app.py <path_to_model>")
         sys.exit(1)
+
+    start_http_server(18000)
+
     
     # Run the FastAPI app
     uvicorn.run(app, host="0.0.0.0", port=5000)
