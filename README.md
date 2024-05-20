@@ -1,5 +1,10 @@
 # Pulsar Detection Project, BDL-Project
 
+## To run deployment:
+```bash
+docker build -t pulsar-fastapi-app 
+docker run -d -p 5000:5000 -p 18000:18000 pulsar-fastapi-app
+```
 ## Problem
 
 Pulsars are a type of neutron star that emit beams of electromagnetic radiation. Detecting pulsars is a significant challenge in the field of astronomy due to their sparse occurrence and the presence of a vast amount of noise in the data. Efficiently processing and analyzing large datasets to identify these celestial objects requires robust data processing and machine learning techniques.
@@ -10,6 +15,9 @@ This project is organized into several key directories and files to facilitate d
 
 ```bash
 PulsarDetectionProject/
+|__ deploy
+|.  |__ api-app.py
+|
 ├── download/
 │   ├── fetch_data_dag.py     # Airflow DAG to fetch the latest data
 │   ├── data/                 # Directory where the fetched data will be stored
@@ -20,7 +28,6 @@ PulsarDetectionProject/
 ├── requirements.txt          # Required Python packages
 ├── README.md                 # Project documentation
 ```
-
 
 ### Detailed Descriptions
 
@@ -44,18 +51,26 @@ This directory is dedicated to building and training machine learning models to 
 
 **Files:**
 
-- getmodel_mlflow `.py `: A script to train various machine learning models for pulsar detection.
+- `getmodel_mlflow .py `: A script to train various machine learning models for pulsar detection.
 - `models/`: A directory to store trained models.
 
 **Usage:**
 
 1. Ensure MLflow is installed and configured.
-2. Run the getmodel_mlflow `.py ` script to start training models.
+2. Run the `getmodel_mlflow `.py ` script to start training models.
 3. Use MLflow UI to track and manage experiments.
 
 #### pulsar_processing.py
 
 This standalone script is responsible for data processing using Apache Beam. It reads the raw pulsar data, performs cleaning, feature engineering, and prepares the data for modeling.
+
+#### Deploy
+The fastapi app code is in `api-app.py` file. The deployment can be ran by running the docker file.
+
+```bash
+docker build -t pulsar-fastapi-app 
+docker run -d -p 5000:5000 -p 18000:18000 pulsar-fastapi-app
+```
 
 **Usage:**
 

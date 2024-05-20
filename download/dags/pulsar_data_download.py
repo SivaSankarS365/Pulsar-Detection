@@ -56,4 +56,3 @@ extract_task = PythonOperator(
 
 # Set the task dependencies
 download_task >> extract_task
-

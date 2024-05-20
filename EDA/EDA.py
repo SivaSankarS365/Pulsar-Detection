@@ -34,7 +34,7 @@ df.columns = [
 
 # In[2]:
 
-
+plt.figure()
 for i, column in enumerate(df.columns[:-1]): 
     plt.subplot(3, 3, i + 1)
     sns.histplot(df[column], bins=20, kde=True)
@@ -45,7 +45,7 @@ plt.savefig('figures/histogram.png')
 
 # In[4]:
 
-
+plt.figure()
 pairplot = sns.pairplot(df, hue='label', diag_kind='hist')
 for ax in pairplot.axes.flatten():
     ax.tick_params(axis='x', rotation=45)
@@ -56,7 +56,7 @@ plt.savefig('figures/pairplot.png')
 
 # In[5]:
 
-
+plt.figure()
 sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt=".2f")
 plt.title("Correlation Matrix")
 plt.savefig('figures/correlation_matrix.png')
@@ -64,7 +64,7 @@ plt.savefig('figures/correlation_matrix.png')
 
 # In[6]:
 
-
+plt.figure()
 sns.countplot(x='label', data=df)
 plt.title("Target Class Distribution")
 plt.savefig('figures/target_class_distribution.png')
@@ -72,7 +72,7 @@ plt.savefig('figures/target_class_distribution.png')
 
 # In[8]:
 
-
+plt.figure()
 for i, column in enumerate(df.columns[:-1]):  
     plt.subplot(3, 3, i + 1)
     sns.boxplot(x='label', y=column, data=df)
@@ -83,7 +83,7 @@ plt.savefig('figures/boxplot.png')
 
 # In[11]:
 
-
+plt.figure()
 for i, column in enumerate(df.columns[:-1]):  
     plt.subplot(3, 3, i + 1)
     sns.violinplot(x='label', y=column, data=df)
@@ -94,17 +94,10 @@ plt.savefig('figures/violinplot.png')
 
 # In[13]:
 
-
+plt.figure()
 for i, column in enumerate(df.columns[:-1]):  # Exclude the target class
     plt.subplot(3, 3, i + 1)
     sns.kdeplot(data=df, x=column, hue='label', fill=True, common_norm=False)
     plt.title(column)
 plt.tight_layout()
 plt.savefig('figures/kdeplot.png')
-
-
-# In[ ]:
-
-
-
-
