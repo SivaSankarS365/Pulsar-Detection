@@ -2,8 +2,20 @@
 
 ## To run deployment:
 ```bash
+git clone 
+
+# Without Docker - deploy commands
+
+pip install -r requirements.txt 
+python deploy/api-app.py modeling/best_xgboost_model.pkl
+
+# With Docker
 docker build -t pulsar-fastapi-app 
 docker run -d -p 5000:5000 -p 18000:18000 pulsar-fastapi-app
+
+# Monitoring 
+./node_exporter --web.listen-address=:9200 &
+"$PATHTOPROMETHEUSBINARY$" --config.file=deploy/prometheus.yml
 ```
 ## Problem
 
