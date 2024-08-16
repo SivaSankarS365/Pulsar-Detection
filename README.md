@@ -1,4 +1,4 @@
-# Pulsar Detection Project, BDL-Project
+# Pulsar Detection Project
 
 ## To run deployment:
 ```bash
