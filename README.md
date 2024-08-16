@@ -1,94 +1,137 @@
 # Pulsar Detection Project
 
-## To run deployment:
+## Overview
+
+Pulsars are rapidly rotating neutron stars that emit beams of electromagnetic radiation. Detecting these celestial objects is challenging due to their rarity and the overwhelming noise in astronomical data. This project leverages advanced data processing and machine learning techniques to identify pulsars from large datasets efficiently.
+
+## Purpose
+
+This project aims to showcase the application of MLOps tools in a typical industrial project workflow. By integrating tools like MLflow, Apache Beam, Apache Airflow, and Prometheus, this project demonstrates how to streamline and automate the end-to-end process of data acquisition, model training, deployment, and monitoring. This approach ensures scalability, reproducibility, and efficient management of machine learning models in real-world scenarios.
+
+## Deployment
+
+To deploy the Pulsar Detection Project, you can either use Docker for containerization or run the application directly on your machine.
+
+### Clone the Repository
+
 ```bash
-git clone 
-
-# Without Docker - deploy commands
-
-pip install -r requirements.txt 
-python deploy/api-app.py modeling/best_xgboost_model.pkl
-
-# With Docker
-docker build -t pulsar-fastapi-app .
-docker run -d -p 5000:5000 -p 18000:18000 pulsar-fastapi-app
-
-# Monitoring 
-./node_exporter --web.listen-address=:9200 &
-"$PATHTOPROMETHEUSBINARY$" --config.file=deploy/prometheus.yml
+git clone https://github.com/SivaSankarS365/Pulsar-Detection.git
 ```
-## Problem
 
-Pulsars are a type of neutron star that emit beams of electromagnetic radiation. Detecting pulsars is a significant challenge in the field of astronomy due to their sparse occurrence and the presence of a vast amount of noise in the data. Efficiently processing and analyzing large datasets to identify these celestial objects requires robust data processing and machine learning techniques.
+### Without Docker
 
-## File Structure
+1. Install the required Python packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-This project is organized into several key directories and files to facilitate data acquisition, processing, and modeling.
+2. Start the FastAPI application:
+   ```bash
+   python deploy/api-app.py modeling/best_xgboost_model.pkl
+   ```
+
+### With Docker
+
+1. Build the Docker image:
+   ```bash
+   docker build -t pulsar-fastapi-app .
+   ```
+
+2. Run the Docker container:
+   ```bash
+   docker run -d -p 5000:5000 -p 18000:18000 pulsar-fastapi-app
+   ```
+
+### Monitoring
+
+You can monitor the application using Prometheus and Node Exporter:
+
+1. Start Node Exporter:
+   ```bash
+   ./node_exporter --web.listen-address=:9200 &
+   ```
+
+2. Start Prometheus with the specified configuration:
+   ```bash
+   "$PATHTOPROMETHEUSBINARY$" --config.file=deploy/prometheus.yml
+   ```
+
+## Problem Statement
+
+Pulsars are challenging to detect due to their sparse occurrence and the vast amount of noise in the data. This project addresses this challenge by applying robust data processing and machine learning techniques to analyze large datasets and accurately identify pulsars.
+
+## Project Structure
 
 ```bash
 PulsarDetectionProject/
-|__ deploy
-|.  |__ api-app.py
-|
+├── deploy/
+│   └── api-app.py
 ├── download/
-│   ├── fetch_data_dag.py     # Airflow DAG to fetch the latest data
-│   ├── data/                 # Directory where the fetched data will be stored
+│   ├── fetch_data_dag.py
+│   └── data/
 ├── modeling/
-│   ├── train_model.py        # Script for training models to predict pulsars using MLflow
-│   ├── models/               # Directory to save trained models
-├── pulsar_processing.py      # Data processing script using Apache Beam
-├── requirements.txt          # Required Python packages
-├── README.md                 # Project documentation
+│   ├── train_model.py
+│   └── models/
+├── pulsar_processing.py
+├── requirements.txt
+└── README.md
 ```
 
-### Detailed Descriptions
+### Directory and File Descriptions
 
-#### download/
+#### `deploy/`
 
-This directory contains the Airflow DAG script `pulsar_data_download.py` which automates the process of downloading the latest pulsar data. The downloaded data is stored in the `data/` subdirectory.
+- **`api-app.py`**: Contains the FastAPI application code for deploying the pulsar detection service.
 
-**Files:**
+#### `download/`
 
-- dags/pulsar_data_download `.py `: An Airflow DAG to schedule and automate data fetching tasks.
+- **`fetch_data_dag.py`**: An Airflow DAG that automates downloading the latest pulsar data. The data is stored in the `data/` subdirectory.
 
 **Usage:**
 
-1. Ensure Airflow is properly installed and configured.
-2. Place the `pulsar_data_download.py` script in the Airflow DAGs directory.
-3. Start the Airflow scheduler to begin fetching data periodically.
+1. Place `fetch_data_dag.py` in the Airflow DAGs directory.
+2. Start the Airflow scheduler to fetch data periodically.
 
-#### modeling/
+#### `modeling/`
 
-This directory is dedicated to building and training machine learning models to predict pulsars. The main script `getmodel_mlflow.py` utilizes MLflow for tracking experiments and model management.
-
-**Files:**
-
-- `getmodel_mlflow .py `: A script to train various machine learning models for pulsar detection.
-- `models/`: A directory to store trained models.
+- **`train_model.py`**: Script to train machine learning models for pulsar detection using MLflow for experiment tracking.
+- **`models/`**: Directory to store the trained models.
 
 **Usage:**
 
-1. Ensure MLflow is installed and configured.
-2. Run the `getmodel_mlflow `.py ` script to start training models.
-3. Use MLflow UI to track and manage experiments.
+1. Run `train_model.py` to start training.
+2. Use MLflow UI to track and manage experiments.
 
-#### pulsar_processing.py
+#### `pulsar_processing.py`
 
-This standalone script is responsible for data processing using Apache Beam. It reads the raw pulsar data, performs cleaning, feature engineering, and prepares the data for modeling.
-
-#### Deploy
-The fastapi app code is in `api-app.py` file. The deployment can be ran by running the docker file.
-
-```bash
-docker build -t pulsar-fastapi-app 
-docker run -d -p 5000:5000 -p 18000:18000 pulsar-fastapi-app
-```
+This script processes the raw pulsar data using Apache Beam, performing data cleaning, feature engineering, and preparation for modeling.
 
 **Usage:**
 
 1. Ensure Apache Beam is installed.
-2. Run the `pulsar_processing.py` script to process the data.
-
-   ```sh
+2. Run the script:
+   ```bash
    python pulsar_processing.py
    ```
+
+## Tools Used
+
+### MLflow
+
+MLflow is an open-source platform for managing the machine learning lifecycle, including experimentation, reproducibility, and deployment. In this project, MLflow is used to track the performance of various models and efficiently manage the trained models.
+
+### Apache Beam
+
+Apache Beam is a unified programming model for defining and executing data processing pipelines. It is utilized in this project for scalable and efficient processing of large pulsar datasets.
+
+### Apache Airflow
+
+Apache Airflow is an open-source tool for programmatically authoring, scheduling, and monitoring workflows. In this project, Airflow automates the data fetching process, ensuring that the models are always trained on the most recent data.
+
+### Prometheus
+
+Prometheus is an open-source systems monitoring and alerting toolkit. In this project, Prometheus is used to monitor the application and infrastructure, providing real-time metrics and insights to ensure the system's health and performance.
+
+## Conclusion
+
+This project combines cutting-edge machine learning, data processing, and workflow automation tools to address the challenge of detecting pulsars in noisy astronomical data. By leveraging Docker for deployment and tools like MLflow, Apache Beam, and Airflow, we ensure that the project is scalable, reproducible, and easy to maintain.
