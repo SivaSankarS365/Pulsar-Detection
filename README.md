@@ -1,4 +1,9 @@
 # Pulsar Detection Project
+<p align="center">
+   <img width="333" alt="image" src="https://github.com/user-attachments/assets/1a0bb452-48ad-4c2a-8203-526251816d1e">
+
+</p>
+
 
 ## Overview
 
@@ -61,7 +66,7 @@ You can monitor the application using Prometheus and Node Exporter:
 Pulsars are challenging to detect due to their sparse occurrence and the vast amount of noise in the data. This project addresses this challenge by applying robust data processing and machine learning techniques to analyze large datasets and accurately identify pulsars.
 
 ## Project Structure
-
+<img width="829" alt="image" src="https://github.com/user-attachments/assets/dcf66dcc-54c9-4c77-8047-78ecd7e84b05">
 ```bash
 PulsarDetectionProject/
 ├── deploy/
